@@ -729,6 +729,7 @@ where
 		&self, contents: T, destination: Destination, reply_path: Option<BlindedPath>,
 		log_suffix: fmt::Arguments
 	) -> Result<SendSuccess, SendError> {
+		log_debug!(self.logger, "ARE WE GETTING TO FIND PATH AND ENQUEUE ONION MESSAGE");
 		let result = self.find_path(destination)
 			.and_then(|path| self.enqueue_onion_message(path, contents, reply_path, log_suffix));
 
@@ -1017,6 +1018,7 @@ where
 	// enqueued in the handler by users, find a path to the corresponding blinded path's introduction
 	// node, and then enqueue the message for sending to the first peer in the full path.
 	fn next_onion_message_for_peer(&self, peer_node_id: PublicKey) -> Option<OnionMessage> {
+		log_debug!(self.logger, "ARE WE GETTING TO NEXT_ONION_MESSAGE_FOR_PEER");
 		// Enqueue any initiating `OffersMessage`s to send.
 		for message in self.offers_handler.release_pending_messages() {
 			#[cfg(not(c_bindings))]
